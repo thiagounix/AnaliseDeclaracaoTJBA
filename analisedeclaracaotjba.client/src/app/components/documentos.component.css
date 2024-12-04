@@ -1,0 +1,139 @@
+/* Container Principal */
+.documentos-container {
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 800px;
+  font-family: Arial, sans-serif;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+  .documentos-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+.documentos-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+  .documentos-table th,
+  .documentos-table td {
+    text-align: left;
+    padding: 12px;
+    border: 1px solid #ddd;
+  }
+
+  .documentos-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 14px;
+    color: #555;
+  }
+
+  .documentos-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  .documentos-table tr:hover {
+    background-color: #f1f1f1;
+  }
+
+  .documentos-table td {
+    font-size: 14px;
+    color: #333;
+  }
+
+
+/* Formulário */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+  form div {
+    display: flex;
+    flex-direction: column;
+  }
+
+  form label {
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+  }
+
+  form input {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+    form input:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 4px rgba(0, 123, 255, 0.2);
+      outline: none;
+    }
+
+  /* Botão */
+  form button {
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+    form button:hover {
+      background-color: #0056b3;
+      transform: translateY(-2px);
+    }
+
+    form button:active {
+      transform: translateY(0);
+    }
+
+    form button:disabled {
+      background-color: #ddd;
+      cursor: not-allowed;
+    }
+button {
+  margin: 0 5px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+  button:hover {
+    opacity: 0.9;
+  }
+
+  button:nth-child(1) {
+    background-color: #007bff;
+    color: white;
+  }
+
+  button:nth-child(2) {
+    background-color: #dc3545;
+    color: white;
+  }
+
+/* Mensagem de Feedback */
+.message {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+  color: #28a745;
+}
