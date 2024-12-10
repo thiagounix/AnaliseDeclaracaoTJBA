@@ -1,0 +1,11 @@
+<div class="upload-container">
+  <h2>Enviar Documento</h2>
+  <form (submit)="enviarDocumento(); $event.preventDefault()">
+    <div class="form-group">
+      <label for="arquivo">Selecionar Arquivo:</label>
+      <input id="arquivo" type="file" (change)="selecionarArquivo($event)" accept="application/pdf" required />
+    </div>
+
+    <button type="submit">Enviar</button>
+  </form>
+</div>

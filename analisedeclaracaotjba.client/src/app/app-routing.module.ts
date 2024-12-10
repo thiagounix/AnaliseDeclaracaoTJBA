@@ -1,11 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { DocumentosListComponent } from './components/documentos-list/documentos-list.component';
+import { DocumentosUploadComponent } from './components/documentos-upload/documentos-upload.component';
+import { HomeComponent } from './components/home/home.component';
+const routes: Routes = [
+  { path: '', component: HomeComponent },
+  { path: 'documentos-list', component: DocumentosListComponent },
+  { path: 'documentos-upload', component: DocumentosUploadComponent }
+];
 
-@Component({
-  selector: 'app-documentos',
-  templateUrl: './documentos.component.html',
-  styleUrls: ['./documentos.component.css']
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
 })
-export class DocumentosComponent implements OnInit {
-  constructor() { }
-  ngOnInit(): void { }
-}
+export class AppRoutingModule { }

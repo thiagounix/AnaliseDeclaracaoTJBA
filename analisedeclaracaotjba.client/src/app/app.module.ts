@@ -1,19 +1,25 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms'; // Certifique-se de que está importado
+import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
-import { DocumentosComponent } from './components/documentos.component';
+import { DocumentosListComponent } from './components/documentos-list/documentos-list.component';
+import { DocumentosUploadComponent } from './components/documentos-upload/documentos-upload.component';
+import { AppRoutingModule } from './app-routing.module'; // Import do módulo de rotas
+import { HomeComponent } from './components/home/home.component'; // Import do HomeComponent
 
 @NgModule({
   declarations: [
     AppComponent,
-    DocumentosComponent
+    DocumentosListComponent,
+    DocumentosUploadComponent,
+    HomeComponent 
   ],
   imports: [
     BrowserModule,
-    FormsModule, // Incluído para suportar [(ngModel)]
-    HttpClientModule
+    FormsModule,
+    HttpClientModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

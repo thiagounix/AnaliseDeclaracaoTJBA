@@ -1,9 +1,24 @@
 export interface Documento {
-  _id?: string; // Identificador único
-  nome: string; // Nome do documento
-  tipo: string; // Tipo do arquivo
-  dataCriacao: Date; // Data de envio
-  validado: boolean; // Documento foi validado
-  resultadoValidacao?: string; // Resultado da validação
-  fileId?: string; // ID do arquivo no GridFS
+  _id: string; // Identificador único no MongoDB
+  razaoSocial: string; // Nome/Razão Social
+  cpfCnpj: string; // CPF ou CNPJ
+  dataCertidao: Date; // Data da certidão
+  validado: boolean; // Status de validação
+  certidaoNumero: string; // Número da certidão
+  endereco?: string; // Endereço, opcional
+  dataPrazoCertidao: Date; // Prazo da certidão (dataCertidao + 30 dias)
+  statusProcessamentoCertidao: string; // Status do processamento
+  observacoes?: string; // Observações, opcional
+  fileId: string; // Identificador do arquivo PDF
+  processoList?: string[]; // Lista de processos, opcional
+  emissor?: string; // Emissor da certidão
+  logs: LogEntry[]; // Logs
+  qrcode: string; // QR Code
+}
+
+export interface LogEntry {
+  acao: string; // Ação realizada
+  data: Date; // Data da ação
+  usuario: string; // Usuário responsável
+  observacao?: string; // Observação, opcional
 }

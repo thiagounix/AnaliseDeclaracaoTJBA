@@ -1,0 +1,47 @@
+.documentos-list-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.filtros {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+  .filtros input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .filtros button {
+    padding: 8px 12px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+    .filtros button:hover {
+      background-color: #0056b3;
+    }
+
+.documentos-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+  .documentos-table th, .documentos-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  .documentos-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }

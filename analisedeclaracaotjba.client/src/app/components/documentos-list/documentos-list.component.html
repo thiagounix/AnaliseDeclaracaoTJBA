@@ -1,0 +1,37 @@
+<div class="documentos-list-container">
+  <h2>Lista de Documentos</h2>
+  <div class="filtros">
+    <input type="text"
+           [(ngModel)]="filtro"
+           placeholder="Filtrar por CPF/CNPJ, status ou validade" />
+    <button (click)="filtrarDocumentos()">Filtrar</button>
+    <button (click)="carregarDocumentos()">Limpar Filtro</button>
+  </div>
+
+  <table class="documentos-table">
+    <thead>
+      <tr>
+        <th>Razão Social</th>
+        <th>CPF/CNPJ</th>
+        <th>Data de Validade da Certidão</th>
+        <th>Validado</th>
+        <th>Número da Certidão</th>
+        <th>Status de Processamento</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let documento of documentos">
+        <td>{{ documento.razaoSocial }}</td>
+        <td>{{ documento.cpfCnpj }}</td>
+        <td>{{ documento.dataPrazoCertidao | date: 'short' }}</td>
+        <td>{{ documento.validado ? 'Sim' : 'Não' }}</td>
+        <td>{{ documento.certidaoNumero }}</td>
+        <td>{{ documento.statusProcessamentoCertidao }}</td>
+        <td><img [src]="documento.qrcode" alt="QR Code" width="100" /></td>
+        <td>
+          <button (click)="baixarDocumento(documento._id, documento.razaoSocial)">Baixar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

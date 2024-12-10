@@ -6,8 +6,9 @@ public class FileUploadOperationFilter : IOperationFilter
 {
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
-        if (operation.OperationId == "UploadDocumento") // Certifique-se de que o OperationId corresponda ao seu endpoint
+        if (operation.OperationId == "UploadDocumento")
         {
+            operation.Parameters.Clear();
             operation.RequestBody = new OpenApiRequestBody
             {
                 Content = new Dictionary<string, OpenApiMediaType>
@@ -23,13 +24,9 @@ public class FileUploadOperationFilter : IOperationFilter
                                 {
                                     Type = "string",
                                     Format = "binary"
-                                },
-                                ["nome"] = new OpenApiSchema
-                                {
-                                    Type = "string"
                                 }
                             },
-                            Required = new HashSet<string> { "arquivo", "nome" }
+                            Required = new HashSet<string> { "arquivo" }
                         }
                     }
                 }
