@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-root', // O seletor usado no index.html
-  template: `
+    selector: 'app-root', // O seletor usado no index.html
+    template: `
     <div class="app-container">
       <header>
         <h1>Sistema de Análise de Declarações</h1>
@@ -20,6 +20,7 @@ import { Component } from '@angular/core';
       </footer>
     </div>
   `,
-  styleUrls: ['./app.component.css']
+    styleUrls: ['./app.component.css'],
+    standalone: false
 })
 export class AppComponent { }

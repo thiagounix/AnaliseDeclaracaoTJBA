@@ -3,9 +3,10 @@ import { DocumentosService } from '../../services/documentos.service';
 import { Documento, LogEntry } from '../../models/documento.model';
 
 @Component({
-  selector: 'app-documentos-list',
-  templateUrl: './documentos-list.component.html',
-  styleUrls: ['./documentos-list.component.css']
+    selector: 'app-documentos-list',
+    templateUrl: './documentos-list.component.html',
+    styleUrls: ['./documentos-list.component.css'],
+    standalone: false
 })
 export class DocumentosListComponent implements OnInit {
   [x: string]: any;
@@ -41,7 +42,7 @@ export class DocumentosListComponent implements OnInit {
         this.documentos = data;
         this.isLoading = false;
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Erro ao filtrar documentos:', err);
         this.isLoading = false;
       }
@@ -61,7 +62,7 @@ export class DocumentosListComponent implements OnInit {
         a.download = `${razaoSocial}.pdf`;
         a.click();
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Erro ao baixar documento:', err);
       }
     });

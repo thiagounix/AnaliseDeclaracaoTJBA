@@ -1,9 +1,9 @@
-﻿using System.Diagnostics;
-using System.Text.Json;
-using System.Text.RegularExpressions;
+﻿using AnaliseDeclaracaoTJBA.Server.Features.ApiExtensions.Requests;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using AnaliseDeclaracaoTJBA.Server.Features.ApiExtensions.Requests;
+using System.Diagnostics;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace AnaliseDeclaracaoTJBA.Server.Features.ApiExtensions;
 
@@ -189,7 +189,7 @@ public static class ConsumirEndPoint
                         validadoCount,
                         invalidoCount,
                         erroCount,
-                        erroIds, 
+                        erroIds,
                         tempoDecorridoSegundos = stopwatch.Elapsed.TotalSeconds
                     },
                     resultados

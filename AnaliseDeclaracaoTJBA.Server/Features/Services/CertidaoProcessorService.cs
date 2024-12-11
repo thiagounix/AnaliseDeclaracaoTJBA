@@ -153,7 +153,7 @@ public class CertidaoProcessorService
                 { "observacao", observacao }
             });
 
-        await collection.UpdateOneAsync(
+        _ = await collection.UpdateOneAsync(
             Builders<BsonDocument>.Filter.Eq("_id", documento["_id"]),
             update
         );
@@ -177,7 +177,7 @@ public class CertidaoProcessorService
                 { "observacao", validado ? "Certidão confirmada válida." : "Certidão marcada como inválida." }
             });
 
-        await collection.UpdateOneAsync(
+        _ = await collection.UpdateOneAsync(
             Builders<BsonDocument>.Filter.Eq("_id", documento["_id"]),
             update
         );
@@ -197,7 +197,7 @@ public class CertidaoProcessorService
                 { "detalhes", erro }
             });
 
-        await collection.UpdateOneAsync(
+        _ = await collection.UpdateOneAsync(
             Builders<BsonDocument>.Filter.Eq("_id", documento["_id"]),
             update
         );

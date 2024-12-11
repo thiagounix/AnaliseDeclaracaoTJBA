@@ -1,6 +1,6 @@
 ﻿using AnaliseDeclaracaoTJBA.Server.Features.ApiExtensions.Requests;
-using iTextSharp.text.pdf.parser;
 using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.parser;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 

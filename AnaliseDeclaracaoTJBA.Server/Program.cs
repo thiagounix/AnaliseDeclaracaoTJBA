@@ -17,7 +17,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularClient", policy =>
     {
-        policy.AllowAnyOrigin() // Permite qualquer origem
+        _ = policy.AllowAnyOrigin() // Permite qualquer origem
               .AllowAnyMethod() // Permite qualquer método HTTP
               .AllowAnyHeader(); // Permite qualquer cabeçalho
     });
@@ -31,7 +31,7 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "API de Documentos", Version = "v1" });
     c.OperationFilter<FileUploadOperationFilter>();
-   // c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "YourProjectName.xml")); // Comente se não tiver XML
+    // c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "YourProjectName.xml")); // Comente se não tiver XML
 });
 
 

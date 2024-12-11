@@ -6,13 +6,13 @@ public class CertidaoResponse
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; } // Identificador único no MongoDB (Obrigatório*)
+    public required string Id { get; set; } // Identificador único no MongoDB (Obrigatório*)
 
     [BsonElement("razaoSocial")]
-    public string RazaoSocial { get; set; } // Nome da empresa ou pessoa física (Obrigatório*)
+    public required string RazaoSocial { get; set; } // Nome da empresa ou pessoa física (Obrigatório*)
 
     [BsonElement("cpfCnpj")]
-    public string CpfCnpj { get; set; } // CPF ou CNPJ no formato esperado (Obrigatório*)
+    public required string CpfCnpj { get; set; } // CPF ou CNPJ no formato esperado (Obrigatório*)
 
     [BsonElement("dataCertidao")]
     public DateTime DataCertidao { get; set; } // Data da certidão retirada do PDF (Obrigatório*)
@@ -21,7 +21,7 @@ public class CertidaoResponse
     public bool Validado { get; set; } // Indica se foi validado ou não (Obrigatório*)
 
     [BsonElement("certidaoNumero")]
-    public string CertidaoNumero { get; set; } // Número da certidão (Obrigatório*)
+    public required string CertidaoNumero { get; set; } // Número da certidão (Obrigatório*)
 
     [BsonElement("endereco")]
     public string? Endereco { get; set; } // Endereço (Não Obrigatório)
@@ -30,14 +30,14 @@ public class CertidaoResponse
     public DateTime DataPrazoCertidao { get; set; } // DataCertidao + 30 dias (Obrigatório*)
 
     [BsonElement("statusProcessamentoCertidao")]
-    public string StatusProcessamentoCertidao { get; set; } // Status do processamento da certidão (Obrigatório*)
+    public required string StatusProcessamentoCertidao { get; set; } // Status do processamento da certidão (Obrigatório*)
 
     [BsonElement("observacoes")]
     public string? Observacoes { get; set; } // Campo para intercorrências (Não Obrigatório)
 
     [BsonElement("fileId")]
-    public string FileId { get; set; } // Identificador do arquivo no GridFS (Obrioque pode ser?
-                                       // gatório*)
+    public required string FileId { get; set; } // Identificador do arquivo no GridFS (Obrioque pode ser?
+                                                // gatório*)
 
     [BsonElement("processoList")]
     public List<string>? ProcessoList { get; set; } // Lista de processos, se houver (Não Obrigatório)
@@ -47,24 +47,24 @@ public class CertidaoResponse
 
     [BsonElement("logs")]
     public List<LogEntry> Logs { get; set; } = new(); // Logs do processamento (Obrigatório*)
-   
+
     [BsonElement("situacao")]
-    public string Situacao { get; set; } // Situação da certidão ("0" para válida, outros valores para inválida)
+    public required string Situacao { get; set; } // Situação da certidão ("0" para válida, outros valores para inválida)
 
     [BsonElement("qrcode")]
-    public string Qrcode { get; set; } // QR Code em formato base64 (Obrigatório*)
+    public required string Qrcode { get; set; } // QR Code em formato base64 (Obrigatório*)
 }
 
 public class LogEntry
 {
     [BsonElement("acao")]
-    public string Acao { get; set; } // Ação realizada
+    public required string Acao { get; set; } // Ação realizada
 
     [BsonElement("data")]
     public DateTime Data { get; set; } // Data da ação
 
     [BsonElement("usuario")]
-    public string Usuario { get; set; } // Usuário responsável pela ação
+    public required string Usuario { get; set; } // Usuário responsável pela ação
 
     [BsonElement("observacao")]
     public string? Observacao { get; set; } // O

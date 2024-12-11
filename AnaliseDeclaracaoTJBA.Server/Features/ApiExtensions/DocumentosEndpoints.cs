@@ -8,7 +8,7 @@ public static class DocumentosEndpoints
 {
     public static void MapEndpointsDocumentos(this WebApplication app)
     {
-        _ = app.MapGet("/api/documentos-list", async (IMongoClient client, int page = 1, int pageSize = 200, string? status = null, string? cpfCnpj = null, string? certidaoNumero = null, Boolean validado = false) =>
+        _ = app.MapGet("/api/documentos-list", async (IMongoClient client, int page = 1, int pageSize = 200, string? status = null, string? cpfCnpj = null, string? certidaoNumero = null, bool validado = false) =>
         {
             try
             {
@@ -38,7 +38,7 @@ public static class DocumentosEndpoints
                     .Skip((page - 1) * pageSize)
                     .Limit(pageSize)
                     .ToListAsync();
-               
+
                 if (!documentos.Any())
                 {
                     return Results.NotFound("Nenhum documento encontrado.");
@@ -117,7 +117,7 @@ public static class DocumentosEndpoints
                memoryStream.Position = 0;
                // Retorna o arquivo com o nome original
                return Results.File(memoryStream.ToArray(), "application/pdf", fileInfo.Filename);
-               
+
            }
            catch (Exception ex)
            {

@@ -2,16 +2,16 @@
 
 public class CertidaoRequest
 {
-    public List<Fornecedor> Fornecedores { get; set; }
+    public required List<Fornecedor> Fornecedores { get; set; }
 }
 
 public class Fornecedor
 {
-    public string razaoSocial { get; set; }
-    public string cpfCnpj { get; set; }
-    public string Documento { get; set; }
-    public string certidaoNumero { get; set; }
-    public string Validade { get; set; }
+    public required string razaoSocial { get; set; }
+    public required string cpfCnpj { get; set; }
+    public required string Documento { get; set; }
+    public required string certidaoNumero { get; set; }
+    public required string Validade { get; set; }
 }
 public enum modeloCertidao
 {

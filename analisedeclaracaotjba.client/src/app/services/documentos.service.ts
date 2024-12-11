@@ -30,16 +30,16 @@ export class DocumentosService {
     }
 
     return this.http.get<{ data: Documento[] | { data: Documento[] } }>(url).pipe(
-      map((response) => {
+      map((response: { data: { map: (arg0: (doc: any) => any) => any; data: any[]; }; }) => {
         if (Array.isArray(response.data)) {
           // Caso o "data" seja o array diretamente
-          return response.data.map((doc) => ({
+          return response.data.map((doc: { [x: string]: any; }) => ({
             ...doc,
             possuiArquivoPdf: doc['possuiArquivoPdf'] || false,
           }));
         } else if (response.data && Array.isArray(response.data.data)) {
           // Caso o "data" contenha outro "data"
-          return response.data.data.map((doc) => ({
+          return response.data.data.map((doc: { [x: string]: any; }) => ({
             ...doc,
             possuiArquivoPdf: doc['possuiArquivoPdf'] || false,
           }));
@@ -47,7 +47,7 @@ export class DocumentosService {
         console.warn('Estrutura inesperada na resposta da API:', response);
         return [];
       }),
-      catchError((error) => {
+      catchError((error: any) => {
         console.error('Erro ao buscar documentos:', error);
         return throwError(() => new Error('Erro ao buscar documentos.'));
       })
@@ -64,7 +64,7 @@ export class DocumentosService {
     return this.http.get(`${this.apiUrlListar}/${documentoId}/download`, {
       responseType: 'blob',
     }).pipe(
-      catchError((error) => {
+      catchError((error: { status: number; message: any; }) => {
         if (error.status === 404) {
           console.error('Arquivo não encontrado para download:', error.message);
           return throwError(() => new Error('Arquivo não disponível para download.'));

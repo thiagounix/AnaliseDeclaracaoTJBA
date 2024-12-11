@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { DocumentosService } from '../../services/documentos.service';
 
 @Component({
-  selector: 'app-documentos-upload',
-  templateUrl: './documentos-upload.component.html',
-  styleUrls: ['./documentos-upload.component.css']
+    selector: 'app-documentos-upload',
+    templateUrl: './documentos-upload.component.html',
+    styleUrls: ['./documentos-upload.component.css'],
+    standalone: false
 })
 export class DocumentosUploadComponent {
   arquivo!: File; // Arquivo selecionado
