@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { Documento } from '../models/documento.model';
+
 
 @Injectable({
   providedIn: 'root',
