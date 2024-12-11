@@ -1,28 +1,39 @@
 .documentos-list-container {
   padding: 20px;
   font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
 }
 
 .filtros {
   margin-bottom: 20px;
   display: flex;
   gap: 10px;
+  align-items: center;
 }
 
   .filtros input {
     flex: 1;
-    padding: 8px;
-    border: 1px solid #ccc;
+    padding: 6px;
+    font-size: 14px;
+    border: 1px solid #ddd;
     border-radius: 4px;
+    transition: border-color 0.3s;
   }
 
+    .filtros input:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+
   .filtros button {
-    padding: 8px 12px;
+    padding: 6px 10px;
+    font-size: 14px;
     border: none;
     background-color: #007bff;
     color: #fff;
     border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.3s;
   }
 
     .filtros button:hover {
@@ -33,15 +44,73 @@
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  font-size: 14px;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-  .documentos-table th, .documentos-table td {
+  .documentos-table th,
+  .documentos-table td {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 10px;
     text-align: left;
+    vertical-align: middle;
   }
 
   .documentos-table th {
-    background-color: #f4f4f4;
+    background-color: #f0f0f0;
     font-weight: bold;
+    font-size: 14px;
   }
+
+  .documentos-table td {
+    font-size: 14px;
+  }
+
+  .documentos-table tr:hover {
+    background-color: #f9f9f9;
+  }
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 18px;
+  font-family: Arial, sans-serif;
+  display: none; /* Será exibido via JavaScript */
+}
+
+  .loading-overlay.show {
+    display: flex;
+  }
+.icon-valid {
+  color: green;
+  font-size: 20px;
+  cursor: help;
+}
+
+.icon-invalid {
+  color: red;
+  font-size: 20px;
+  cursor: help;
+}
+
+.icon-info {
+  color: orange;
+  font-size: 20px;
+  cursor: help;
+}
+
+.icon-alert {
+  color: red;
+  font-size: 20px;
+  cursor: help;
+}

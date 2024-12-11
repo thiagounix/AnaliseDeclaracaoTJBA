@@ -38,6 +38,7 @@ public static class DocumentosEndpoints
                     .Skip((page - 1) * pageSize)
                     .Limit(pageSize)
                     .ToListAsync();
+               
                 if (!documentos.Any())
                 {
                     return Results.NotFound("Nenhum documento encontrado.");
@@ -58,11 +59,18 @@ public static class DocumentosEndpoints
                                             ? d["dataPrazoCertidao"].ToUniversalTime()
                                             : DateTime.MinValue,
                         StatusProcessamentoCertidao = d["statusProcessamentoCertidao"].AsString,
-                        validado = d["validado"].AsBoolean
+                        validado = d["validado"].AsBoolean,
+                        logs = d["logs"].AsBsonArray.Select(log => new
+                        {
+                            acao = log["acao"].ToString(),
+                            data = log["data"].ToUniversalTime(),
+                            usuario = log["usuario"].ToString(),
+                        }).ToList(),
+                        possuiArquivoPdf = d.Contains("fileId") && ObjectId.TryParse(d["fileId"].ToString(), out _)
                     })
                 };
 
-                return Results.Ok(result);
+                return Results.Ok(new { data = result });
             }
             catch (Exception ex)
             {

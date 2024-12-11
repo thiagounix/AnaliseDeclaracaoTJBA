@@ -1,11 +1,15 @@
 <div class="documentos-list-container">
   <h2>Lista de Documentos</h2>
   <div class="filtros">
-    <input type="text"
+    <input type="text" 
            [(ngModel)]="filtro"
-           placeholder="Filtrar por CPF/CNPJ, status ou validade" />
+           placeholder="Filtrar por CPF/CNPJ, Numero de Certidão" />
     <button (click)="filtrarDocumentos()">Filtrar</button>
-    <button (click)="carregarDocumentos()">Limpar Filtro</button>
+    <button (click)="limparFiltro()">Limpar </button>
+  </div>
+
+  <div id="loading-overlay" class="loading-overlay">
+    Processando, por favor aguarde...
   </div>
 
   <table class="documentos-table">
@@ -13,23 +17,40 @@
       <tr>
         <th>Razão Social</th>
         <th>CPF/CNPJ</th>
-        <th>Data de Validade da Certidão</th>
-        <th>Validado</th>
+        <th>Validade da Certidão</th>
         <th>Número da Certidão</th>
-        <th>Status de Processamento</th>
+        <th>Status</th>
+        <th>Tipo de Envio</th>
+        <th>Resultado</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let documento of documentos">
         <td>{{ documento.razaoSocial }}</td>
         <td>{{ documento.cpfCnpj }}</td>
-        <td>{{ documento.dataPrazoCertidao | date: 'short' }}</td>
-        <td>{{ documento.validado ? 'Sim' : 'Não' }}</td>
+        <td>
+          {{ documento.dataPrazoCertidao | date: 'dd/MM/yyyy' }}
+          <span *ngIf="isCertidaoVencida(documento.dataPrazoCertidao)">
+            <img src="assets/icons/alert-red-icon.svg"
+                 alt="Vencida"
+                 title="Certidão vencida"
+                 width="20" />
+          </span>
+        </td>
         <td>{{ documento.certidaoNumero }}</td>
         <td>{{ documento.statusProcessamentoCertidao }}</td>
-        <td><img [src]="documento.qrcode" alt="QR Code" width="100" /></td>
+        <td>{{ getTipoEnvio(documento.logs) }}</td>
         <td>
-          <button (click)="baixarDocumento(documento._id, documento.razaoSocial)">Baixar</button>
+          <i *ngIf="documento.resultadoValidacao === 'Certidão válida'" class="fas fa-check-circle icon-valid" title="Certidão válida"></i>
+          <i *ngIf="documento.resultadoValidacao === 'Certidão inválida'" class="fas fa-times-circle icon-invalid" title="Certidão inválida"></i>
+          <i *ngIf="documento.resultadoValidacao === 'Situação não informada'" class="fas fa-info-circle icon-info" title="Situação não informada"></i>
+          <i *ngIf="isCertidaoVencida(documento)" class="fas fa-exclamation-circle icon-alert" title="Certidão vencida"></i>
+        </td>
+        <td>
+          <button (click)="baixarDocumento(documento._id, documento.razaoSocial)"
+                  [disabled]="isEnviadoPorLote(documento.logs)">
+            Baixar
+          </button>
         </td>
       </tr>
     </tbody>

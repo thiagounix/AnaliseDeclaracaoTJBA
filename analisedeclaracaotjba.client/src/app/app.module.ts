@@ -7,7 +7,7 @@ import { DocumentosListComponent } from './components/documentos-list/documentos
 import { DocumentosUploadComponent } from './components/documentos-upload/documentos-upload.component';
 import { AppRoutingModule } from './app-routing.module'; // Import do módulo de rotas
 import { HomeComponent } from './components/home/home.component'; // Import do HomeComponent
-
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,6 +18,7 @@ import { HomeComponent } from './components/home/home.component'; // Import do H
   imports: [
     BrowserModule,
     FormsModule,
+    TooltipModule.forRoot(),
     HttpClientModule,
     AppRoutingModule
   ],
