@@ -1,18 +1,24 @@
 <div class="documentos-list-container">
   <h2>Lista de Documentos</h2>
   <div class="filtros">
-    <input type="text" 
-           [(ngModel)]="filtro"
-           placeholder="Filtrar por CPF/CNPJ, Numero de Certidão" />
+    <input type="text"
+           [(ngModel)]="cpfCnpj"
+           placeholder="Filtrar por CPF/CNPJ" />
+    <input type="text"
+           [(ngModel)]="certidaoNumero"
+           placeholder="Filtrar por Número da Certidão" />
+    <input type="text"
+           [(ngModel)]="status"
+           placeholder="Filtrar por Status" />
     <button (click)="filtrarDocumentos()">Filtrar</button>
-    <button (click)="limparFiltro()">Limpar </button>
+    <button (click)="limparFiltros()">Limpar</button>
   </div>
 
-  <div id="loading-overlay" class="loading-overlay">
+  <div *ngIf="isLoading" id="loading-overlay" class="loading-overlay">
     Processando, por favor aguarde...
   </div>
 
-  <table class="documentos-table">
+  <table class="documentos-table" *ngIf="!isLoading && documentos.length > 0">
     <thead>
       <tr>
         <th>Razão Social</th>
@@ -22,6 +28,7 @@
         <th>Status</th>
         <th>Tipo de Envio</th>
         <th>Resultado</th>
+        <th>Ações</th>
       </tr>
     </thead>
     <tbody>
@@ -41,10 +48,18 @@
         <td>{{ documento.statusProcessamentoCertidao }}</td>
         <td>{{ getTipoEnvio(documento.logs) }}</td>
         <td>
-          <i *ngIf="documento.resultadoValidacao === 'Certidão válida'" class="fas fa-check-circle icon-valid" title="Certidão válida"></i>
-          <i *ngIf="documento.resultadoValidacao === 'Certidão inválida'" class="fas fa-times-circle icon-invalid" title="Certidão inválida"></i>
-          <i *ngIf="documento.resultadoValidacao === 'Situação não informada'" class="fas fa-info-circle icon-info" title="Situação não informada"></i>
-          <i *ngIf="isCertidaoVencida(documento)" class="fas fa-exclamation-circle icon-alert" title="Certidão vencida"></i>
+          <i *ngIf="documento.resultadoValidacao === 'Certidão válida'"
+             class="fas fa-check-circle icon-valid"
+             title="Certidão válida"></i>
+          <i *ngIf="documento.resultadoValidacao === 'Certidão inválida'"
+             class="fas fa-times-circle icon-invalid"
+             title="Certidão inválida"></i>
+          <i *ngIf="documento.resultadoValidacao === 'Situação não informada'"
+             class="fas fa-info-circle icon-info"
+             title="Situação não informada"></i>
+          <i *ngIf="isCertidaoVencida(documento.dataPrazoCertidao)"
+             class="fas fa-exclamation-circle icon-alert"
+             title="Certidão vencida"></i>
         </td>
         <td>
           <button (click)="baixarDocumento(documento._id, documento.razaoSocial)"
@@ -55,4 +70,8 @@
       </tr>
     </tbody>
   </table>
+
+  <div *ngIf="!isLoading && documentos.length === 0" class="no-data">
+    Nenhum documento encontrado.
+  </div>
 </div>

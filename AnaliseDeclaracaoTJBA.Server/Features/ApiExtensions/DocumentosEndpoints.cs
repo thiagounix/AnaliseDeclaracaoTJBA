@@ -16,28 +16,31 @@ public static class DocumentosEndpoints
                 var collection = database.GetCollection<BsonDocument>("Documentos");
 
 
-                var filter = Builders<BsonDocument>.Filter.Empty;
+                var filters = new List<FilterDefinition<BsonDocument>>();
                 if (!string.IsNullOrEmpty(cpfCnpj))
                 {
-                    filter = Builders<BsonDocument>.Filter.Eq("cpfCnpj", cpfCnpj);
+                    filters.Add(Builders<BsonDocument>.Filter.Eq("cpfCnpj", cpfCnpj));
                 }
                 if (!string.IsNullOrEmpty(certidaoNumero))
                 {
-                    filter = Builders<BsonDocument>.Filter.Eq("certidaoNumero", certidaoNumero);
+                    filters.Add(Builders<BsonDocument>.Filter.Eq("certidaoNumero", certidaoNumero));
                 }
                 if (!string.IsNullOrEmpty(status))
                 {
-                    filter = Builders<BsonDocument>.Filter.Eq("statusProcessamentoCertidao", status);
+                    filters.Add(Builders<BsonDocument>.Filter.Eq("statusProcessamentoCertidao", status));
                 }
+
+                var filter = filters.Any()
+                    ? Builders<BsonDocument>.Filter.And(filters)
+                    : Builders<BsonDocument>.Filter.Empty;
 
                 var totalDocuments = await collection.CountDocumentsAsync(filter);
                 var totalPages = (int)Math.Ceiling((double)totalDocuments / pageSize);
 
                 var documentos = await collection.Find(filter)
-                    .Sort(Builders<BsonDocument>.Sort.Descending("dataCertidao"))
-                    .Skip((page - 1) * pageSize)
-                    .Limit(pageSize)
-                    .ToListAsync();
+     .Skip((page - 1) * pageSize)
+     .Limit(pageSize)
+     .ToListAsync();
 
                 if (!documentos.Any())
                 {
@@ -70,7 +73,7 @@ public static class DocumentosEndpoints
                     })
                 };
 
-                return Results.Ok(new { data = result });
+                return Results.Ok(new { data = result.data.ToList() });
             }
             catch (Exception ex)
             {

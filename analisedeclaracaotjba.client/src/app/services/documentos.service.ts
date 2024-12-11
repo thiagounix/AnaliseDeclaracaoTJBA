@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { Documento } from '../models/documento.model';
-
 
 @Injectable({
   providedIn: 'root',
@@ -13,46 +13,42 @@ export class DocumentosService {
   constructor(private http: HttpClient) { }
 
   getDocumentos(
-    filtro?: string,
-    status?: string,
     cpfCnpj?: string,
-    certidaoNumero?: string
+    certidaoNumero?: string,
+    status?: string
   ): Observable<Documento[]> {
-    let url = this.apiUrlListar;
+    let params = new HttpParams();
 
-    if (filtro || status || cpfCnpj || certidaoNumero) {
-      const params = new HttpParams()
-        .set('filtro', filtro || '')
-        .set('status', status || '')
-        .set('cpfCnpj', cpfCnpj || '')
-        .set('certidaoNumero', certidaoNumero || '');
-      url += `?${params.toString()}`;
+    if (cpfCnpj) {
+      params = params.set('cpfCnpj', cpfCnpj.trim());
     }
+    if (certidaoNumero) {
+      params = params.set('certidaoNumero', certidaoNumero.trim());
+    }
+    if (status) {
+      params = params.set('status', status.trim());
+    }
+    
 
-    return this.http.get<{ data: Documento[] | { data: Documento[] } }>(url).pipe(
-      map((response: { data: { map: (arg0: (doc: any) => any) => any; data: any[]; }; }) => {
-        if (Array.isArray(response.data)) {
-          // Caso o "data" seja o array diretamente
-          return response.data.map((doc: { [x: string]: any; }) => ({
-            ...doc,
-            possuiArquivoPdf: doc['possuiArquivoPdf'] || false,
-          }));
-        } else if (response.data && Array.isArray(response.data.data)) {
-          // Caso o "data" contenha outro "data"
-          return response.data.data.map((doc: { [x: string]: any; }) => ({
+    return this.http.get<{ data: Documento[] }>(this.apiUrlListar, { params }).pipe(
+      map((response) => {
+        if (response.data && Array.isArray(response.data)) {
+          return response.data.map((doc) => ({
             ...doc,
             possuiArquivoPdf: doc['possuiArquivoPdf'] || false,
           }));
         }
+
         console.warn('Estrutura inesperada na resposta da API:', response);
         return [];
       }),
-      catchError((error: any) => {
+      catchError((error) => {
         console.error('Erro ao buscar documentos:', error);
         return throwError(() => new Error('Erro ao buscar documentos.'));
       })
     );
   }
+
   uploadDocumento(formData: FormData): Observable<Documento> {
     return this.http.post<Documento>(this.apiUrlProcessar, formData, {
       headers: {
@@ -60,11 +56,12 @@ export class DocumentosService {
       },
     });
   }
+
   downloadDocumento(documentoId: string): Observable<Blob> {
     return this.http.get(`${this.apiUrlListar}/${documentoId}/download`, {
       responseType: 'blob',
     }).pipe(
-      catchError((error: { status: number; message: any; }) => {
+      catchError((error: { status: number; message: any }) => {
         if (error.status === 404) {
           console.error('Arquivo não encontrado para download:', error.message);
           return throwError(() => new Error('Arquivo não disponível para download.'));

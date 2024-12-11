@@ -9,10 +9,11 @@ import { Documento, LogEntry } from '../../models/documento.model';
     standalone: false
 })
 export class DocumentosListComponent implements OnInit {
-  [x: string]: any;
-  documentos: any[] = [];
-  filtro: string = '';
-  isLoading: boolean = false; // Para controlar o estado de carregamento
+  documentos: Documento[] = [];
+  cpfCnpj: string = '';
+  certidaoNumero: string = '';
+  status: string = '';
+  isLoading: boolean = false;
   constructor(private documentoService: DocumentosService) { }
 
   ngOnInit(): void {
@@ -21,12 +22,12 @@ export class DocumentosListComponent implements OnInit {
 
   carregarDocumentos(): void {
     this.isLoading = true;
-    this.documentoService.getDocumentos().subscribe({
+    this.documentoService.getDocumentos(this.cpfCnpj, this.certidaoNumero, this.status).subscribe({
       next: (data: Documento[]) => {
         this.documentos = data;
         this.isLoading = false;
       },
-      error: (err: any) => {
+      error: (err) => {
         console.error('Erro ao carregar documentos:', err);
         this.isLoading = false;
       },
@@ -34,23 +35,14 @@ export class DocumentosListComponent implements OnInit {
   }
   filtrarDocumentos(): void {
     this.isLoading = true;
-
-    const filtroLower = this.filtro.trim().toLowerCase();
-
-    this.documentoService.getDocumentos(filtroLower).subscribe({
-      next: (data: Documento[]) => {
-        this.documentos = data;
-        this.isLoading = false;
-      },
-      error: (err: any) => {
-        console.error('Erro ao filtrar documentos:', err);
-        this.isLoading = false;
-      }
-    });
+    this.carregarDocumentos();
   }
-  limparFiltro(): void {
-    this.filtro = ''; // Redefine o valor do filtro para vazio
-    this.carregarDocumentos(); // Recarrega a lista completa de documentos
+
+  limparFiltros(): void {
+    this.cpfCnpj = '';
+    this.certidaoNumero = '';
+    this.status = '';
+    this.carregarDocumentos();
   }
 
   baixarDocumento(documentId: string, razaoSocial: string): void {
@@ -80,11 +72,12 @@ export class DocumentosListComponent implements OnInit {
         return 'Tipo Desconhecido';
     }
   }
-  isCertidaoVencida(documento: Documento): boolean {
-    const validade = new Date(documento.dataPrazoCertidao);
+  isCertidaoVencida(dataPrazoCertidao: Date): boolean {
+    const validade = new Date(dataPrazoCertidao);
     const hoje = new Date();
     return validade < hoje;
   }
+
   isEnviadoPorLote(logs: LogEntry[]): boolean {
     const acao = logs[0]?.acao;
     return acao === 'Inserido via consulta API'; // Botão desabilitado para documentos enviados por lote

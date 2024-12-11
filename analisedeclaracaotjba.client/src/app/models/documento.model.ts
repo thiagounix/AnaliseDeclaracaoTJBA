@@ -14,7 +14,8 @@ export interface Documento {
   emissor?: string; // Emissor da certidão
   logs: LogEntry[]; // Logs
   qrcode: string; // QR Code
-  possuiArquivoPdf: boolean; // Indica se possui arquivo PDF
+  resultadoValidacao?: string; // Adicionado
+  possuiArquivoPdf?: boolean; // Indica se possui arquivo PDF
 }
 
 export interface LogEntry {
