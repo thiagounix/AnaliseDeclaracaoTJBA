@@ -3,17 +3,19 @@ import { DocumentosService } from '../../services/documentos.service';
 import { Documento, LogEntry } from '../../models/documento.model';
 
 @Component({
-    selector: 'app-documentos-list',
-    templateUrl: './documentos-list.component.html',
-    styleUrls: ['./documentos-list.component.css'],
-    standalone: false
+  selector: 'app-documentos-list',
+  templateUrl: './documentos-list.component.html',
+  styleUrls: ['./documentos-list.component.css'],
+  standalone: false
 })
 export class DocumentosListComponent implements OnInit {
   documentos: Documento[] = [];
+  filtroGeral: string = '';
   cpfCnpj: string = '';
   certidaoNumero: string = '';
   status: string = '';
   isLoading: boolean = false;
+
   constructor(private documentoService: DocumentosService) { }
 
   ngOnInit(): void {
@@ -22,9 +24,9 @@ export class DocumentosListComponent implements OnInit {
 
   carregarDocumentos(): void {
     this.isLoading = true;
-    this.documentoService.getDocumentos(this.cpfCnpj, this.certidaoNumero, this.status).subscribe({
+    this.documentoService.getDocumentos().subscribe({
       next: (data: Documento[]) => {
-        this.documentos = data;
+        this.documentos = data.sort((a, b) => a.razaoSocial.localeCompare(b.razaoSocial));
         this.isLoading = false;
       },
       error: (err) => {
@@ -33,15 +35,30 @@ export class DocumentosListComponent implements OnInit {
       },
     });
   }
+
   filtrarDocumentos(): void {
+    if (!this.filtroGeral.trim()) {
+      this.carregarDocumentos();
+      return;
+    }
+
     this.isLoading = true;
-    this.carregarDocumentos();
+
+    const filtroLower = this.filtroGeral.trim().toLowerCase();
+
+    this.documentos = this.documentos.filter(documento => {
+      const cpfCnpjMatch = documento.cpfCnpj?.toLowerCase().includes(filtroLower);
+      const certidaoNumeroMatch = documento.certidaoNumero?.toLowerCase().includes(filtroLower);
+      const statusMatch = documento.statusProcessamentoCertidao?.toLowerCase() === filtroLower;
+
+      return cpfCnpjMatch || certidaoNumeroMatch || statusMatch;
+    });
+    this.documentos.sort((a, b) => a.razaoSocial.localeCompare(b.razaoSocial));
+    this.isLoading = false;
   }
 
   limparFiltros(): void {
-    this.cpfCnpj = '';
-    this.certidaoNumero = '';
-    this.status = '';
+    this.filtroGeral = '';
     this.carregarDocumentos();
   }
 
@@ -59,6 +76,7 @@ export class DocumentosListComponent implements OnInit {
       }
     });
   }
+
   getTipoEnvio(logs: LogEntry[]): string {
     const acao = logs[0]?.acao; // Assume o primeiro log como base
     switch (acao) {
@@ -72,7 +90,8 @@ export class DocumentosListComponent implements OnInit {
         return 'Tipo Desconhecido';
     }
   }
-  isCertidaoVencida(dataPrazoCertidao: Date): boolean {
+
+  isCertidaoVencida(dataPrazoCertidao: string | Date): boolean {
     const validade = new Date(dataPrazoCertidao);
     const hoje = new Date();
     return validade < hoje;

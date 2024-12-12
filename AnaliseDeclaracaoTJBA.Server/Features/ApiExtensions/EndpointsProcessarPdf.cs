@@ -39,10 +39,8 @@ public static class EndpointsProcessarPdf
 
                 // Calcula validade com base na data extraída
                 DateTime? dataPrazoCertidao = null;
-                if (DateTime.TryParse(dataCertidao, out var dataParsed))
-                {
-                    dataPrazoCertidao = dataParsed.AddDays(30);
-                }
+                dataPrazoCertidao = DateTime.Parse(dataCertidao).AddDays(30);
+               
 
                 // Salva o arquivo no GridFS
                 var database = client.GetDatabase("AnaliseTJBA");
@@ -59,13 +57,15 @@ public static class EndpointsProcessarPdf
 {
     { "razaoSocial", razaoSocial },
     { "cpfCnpj", cpfCnpj },
-    { "dataCertidao", dataParsed != DateTime.MinValue ? dataParsed : BsonNull.Value },
+    { "dataCertidao",  DateTime.Parse(dataCertidao)},
     { "dataPrazoCertidao", dataPrazoCertidao },
     { "validado", false },
+    {"dataValidacao", BsonNull.Value },
     { "certidaoNumero", certidaoNumero },
     { "situacaoDocumentoEnviado", constaNaoConsta == "NÃO CONSTAR" ? "0" : "1" },
     { "endereco", endereco },
     { "statusProcessamentoCertidao", "Não Processado" },
+    {"resultadoValidacao",BsonNull.Value },
     { "observacoes", BsonNull.Value },
     { "fileId", fileId },
     { "processoList", new BsonArray() }, // Inicializa vazio

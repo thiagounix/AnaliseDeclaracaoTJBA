@@ -1,6 +1,5 @@
 using AnaliseDeclaracaoTJBA.Server;
 using AnaliseDeclaracaoTJBA.Server.Features.ApiExtensions;
-using AnaliseDeclaracaoTJBA.Server.Features.Services;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using Serilog;
@@ -24,8 +23,8 @@ builder.Services.AddCors(options =>
 });
 
 
-builder.Services.AddSingleton<CertidaoProcessorService>();
-//builder.Services.AddHostedService<CertidaoProcessorService>();
+//builder.Services.AddSingleton<CertidaoProcessorService>(); para start stop end point
+//builder.Services.AddHostedService<CertidaoProcessorService>(); para executar background service
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -56,17 +55,17 @@ app.Use(async (context, next) =>
     Console.WriteLine($"Recebendo requisição para {context.Request.Path}");
     await next.Invoke();
 });
-app.MapPost("/api/start-processing", (CertidaoProcessorService processor) =>
-{
-    processor.StartProcessing();
-    return Results.Ok("Processamento iniciado.");
-});
+//app.MapPost("/api/start-processing", (CertidaoProcessorService processor) =>
+//{
+//    processor.StartProcessing();
+//    return Results.Ok("Processamento iniciado.");
+//});
 
-app.MapPost("/api/stop-processing", async (CertidaoProcessorService processor) =>
-{
-    await processor.StopProcessingAsync();
-    return Results.Ok("Processamento pausado.");
-});
+//app.MapPost("/api/stop-processing", async (CertidaoProcessorService processor) =>
+//{
+//    await processor.StopProcessingAsync();
+//    return Results.Ok("Processamento pausado.");
+//});
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

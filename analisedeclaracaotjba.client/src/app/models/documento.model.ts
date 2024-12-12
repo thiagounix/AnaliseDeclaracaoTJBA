@@ -3,6 +3,7 @@ export interface Documento {
   razaoSocial: string; // Nome/Razão Social
   cpfCnpj: string; // CPF ou CNPJ
   dataCertidao: Date; // Data da certidão
+  dataValidacao?: Date; // Data de validação
   validado: boolean; // Status de validação
   certidaoNumero: string; // Número da certidão
   endereco?: string; // Endereço, opcional

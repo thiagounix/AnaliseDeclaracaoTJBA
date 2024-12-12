@@ -52,7 +52,6 @@ public static class ConsumirEndPoint
                             erroIds.Add($"CPF/CNPJ: {fornecedor.cpfCnpj}, Certidão: {fornecedor.certidaoNumero}");
                             resultados.Add(new
                             {
-                                fornecedor.razaoSocial,
                                 fornecedor.cpfCnpj,
                                 fornecedor.certidaoNumero,
                                 mensagem = $"Erro ao consultar API: {response.StatusCode}"
@@ -88,12 +87,26 @@ public static class ConsumirEndPoint
                             var endereco = apiResponse.TryGetProperty("endereco", out var enderecoElement)
                                 ? enderecoElement.GetString()
                                 : null;
-
+                            var razaoSocial = apiResponse.TryGetProperty("razaoSocial", out var razaoSocialElement)
+                                 ? razaoSocialElement.GetString()
+                                 : null;
+                            var dataCertidao = apiResponse.TryGetProperty("dataCriacao", out var dataCriacaoElement)
+                                 ? dataCriacaoElement.GetString()
+                                 : null;
+                            var qrCode = apiResponse.TryGetProperty("qrcode", out var qrcodeElement)
+                              ? qrcodeElement.GetString()
+                              : null;
+                            DateTime? dataPrazoCertidao = null;
+                            if (DateTime.TryParse(dataCertidao, out var dataParsed))
+                            {
+                                dataPrazoCertidao = dataParsed.AddDays(30);
+                            }
                             // Busca documento no MongoDB
                             var filter = Builders<BsonDocument>.Filter.Eq("cpfCnpj", fornecedor.cpfCnpj) &
                                          Builders<BsonDocument>.Filter.Eq("certidaoNumero", fornecedor.certidaoNumero);
                             var documento = await collection.Find(filter).FirstOrDefaultAsync();
-
+                            // Calcula validade com base na data extraída
+                           
                             if (documento == null)
                             {
                                 // Cria novo documento se não existir
@@ -101,12 +114,16 @@ public static class ConsumirEndPoint
                                 {
                                     { "cpfCnpj", fornecedor.cpfCnpj },
                                     { "certidaoNumero", fornecedor.certidaoNumero },
-                                    { "razaoSocial", fornecedor.razaoSocial.Trim() },
-                                    { "dataPrazoCertidao", fornecedor.Validade },
+                                    { "razaoSocial", razaoSocial?.Trim() },
+                                    {"dataCertidao",dataCertidao  },
+                                    { "dataPrazoCertidao", dataPrazoCertidao},
                                     { "statusProcessamentoCertidao", "Processado" },
                                     { "validado", validado },
                                     { "resultadoValidacao", resultadoValidacao },
+                                    { "dataValidacao", DateTime.UtcNow },
+                                    { "modeloCertidao" , 4 },
                                     { "endereco", endereco != null ? (BsonValue)endereco : BsonNull.Value },
+                                    {"qrcode",qrCode },
                                     { "logs", new BsonArray
                                         {
                                             new BsonDocument
@@ -127,8 +144,11 @@ public static class ConsumirEndPoint
                                     .Set("statusProcessamentoCertidao", "Processado")
                                     .Set("validado", validado)
                                     .Set("resultadoValidacao", resultadoValidacao)
-                                    .Set("razaoSocial", fornecedor.razaoSocial.Trim())
-                                    .Set("DataPrazoCertidao", fornecedor.Validade)
+                                    .Set("razaoSocial", razaoSocial?.Trim())
+                                    .Set("DataPrazoCertidao", dataPrazoCertidao)
+                                    .Set("dataValidacao", DateTime.UtcNow)
+                                    .Set("dataCertidao", dataCertidao)
+                                    .Set("modeloCertidao", 4)
                                     .Set("endereco", endereco != null ? (BsonValue)endereco : BsonNull.Value)
                                     .Push("logs", new BsonDocument
                                     {
@@ -143,7 +163,7 @@ public static class ConsumirEndPoint
 
                             resultados.Add(new
                             {
-                                fornecedor.razaoSocial,
+                                razaoSocial,
                                 fornecedor.cpfCnpj,
                                 fornecedor.certidaoNumero,
                                 validado,
@@ -156,7 +176,6 @@ public static class ConsumirEndPoint
                             erroIds.Add($"CPF/CNPJ: {fornecedor.cpfCnpj}, Certidão: {fornecedor.certidaoNumero}");
                             resultados.Add(new
                             {
-                                fornecedor.razaoSocial,
                                 fornecedor.cpfCnpj,
                                 fornecedor.certidaoNumero,
                                 mensagem = "Resposta inválida ou formato inesperado da API externa."
@@ -169,7 +188,6 @@ public static class ConsumirEndPoint
                         erroIds.Add($"CPF/CNPJ: {fornecedor.cpfCnpj}, Certidão: {fornecedor.certidaoNumero}");
                         resultados.Add(new
                         {
-                            fornecedor.razaoSocial,
                             fornecedor.cpfCnpj,
                             fornecedor.certidaoNumero,
                             mensagem = $"Erro ao processar: {ex.Message}"

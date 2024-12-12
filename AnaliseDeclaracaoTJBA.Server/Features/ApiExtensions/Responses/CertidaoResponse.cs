@@ -16,6 +16,9 @@ public class CertidaoResponse
 
     [BsonElement("dataCertidao")]
     public DateTime DataCertidao { get; set; } // Data da certidão retirada do PDF (Obrigatório*)
+ 
+    [BsonElement("modeloCertidao")]
+    public int ModeloCertidao { get; set; } = 4; // Modelo da certidão (4 = "CONCORDATA E FALENCIA")
 
     [BsonElement("validado")]
     public bool Validado { get; set; } // Indica se foi validado ou não (Obrigatório*)
@@ -28,6 +31,9 @@ public class CertidaoResponse
 
     [BsonElement("dataPrazoCertidao")]
     public DateTime DataPrazoCertidao { get; set; } // DataCertidao + 30 dias (Obrigatório*)
+    
+    [BsonElement("dataCriacao")]
+    public DateTime? dataValidacao { get; set; } // Data da certidão retirada do PDF (Obrigatório*)
 
     [BsonElement("statusProcessamentoCertidao")]
     public required string StatusProcessamentoCertidao { get; set; } // Status do processamento da certidão (Obrigatório*)
