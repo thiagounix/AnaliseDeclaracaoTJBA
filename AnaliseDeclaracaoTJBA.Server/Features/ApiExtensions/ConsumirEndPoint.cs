@@ -150,6 +150,7 @@ public static class ConsumirEndPoint
                                     .Set("dataCertidao", dataCertidao)
                                     .Set("modeloCertidao", 4)
                                     .Set("endereco", endereco != null ? (BsonValue)endereco : BsonNull.Value)
+                                    .Set("qrcode", qrCode != null ? (BsonValue)qrCode : BsonNull.Value)
                                     .Push("logs", new BsonDocument
                                     {
                                         { "acao", "Consulta na API do TJBA" },

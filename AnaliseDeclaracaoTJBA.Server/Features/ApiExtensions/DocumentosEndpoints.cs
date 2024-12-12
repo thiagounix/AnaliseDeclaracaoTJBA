@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using iTextSharp.text.pdf.qrcode;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
 
@@ -81,6 +82,12 @@ public static class DocumentosEndpoints
                         resultadoValidacao = d.Contains("resultadoValidacao") && d["resultadoValidacao"].BsonType == BsonType.String
                                              ? d["resultadoValidacao"].AsString
                                              : null,
+                        qrcode = d.Contains("qrcode") && d["qrcode"].BsonType == BsonType.String
+                                  ? d["qrcode"].AsString
+                                  : null,
+                        endereco = d.Contains("endereco") && d["endereco"].BsonType == BsonType.String
+                                  ? d["endereco"].AsString
+                                  : null,
                         logs = d.Contains("logs") && d["logs"].BsonType == BsonType.Array
                                ? d["logs"].AsBsonArray.Select(log =>
                                {

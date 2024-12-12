@@ -90,7 +90,12 @@ export class DocumentosListComponent implements OnInit {
         return 'Tipo Desconhecido';
     }
   }
-
+  getGoogleMapsUrl(endereco: string): string {
+    if (!endereco) {
+      return '';
+    }
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(endereco)}`;
+  }
   isCertidaoVencida(dataPrazoCertidao: string | Date): boolean {
     const validade = new Date(dataPrazoCertidao);
     const hoje = new Date();

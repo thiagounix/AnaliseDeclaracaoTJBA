@@ -15,7 +15,8 @@ export class DocumentosService {
   getDocumentos(
     cpfCnpj?: string,
     certidaoNumero?: string,
-    status?: string
+    status?: string,
+
   ): Observable<Documento[]> {
     let params = new HttpParams();
 
@@ -36,6 +37,8 @@ export class DocumentosService {
           return response.data.map((doc) => ({
             ...doc,
             possuiArquivoPdf: doc['possuiArquivoPdf'] || false,
+            qrcode: doc['qrcode'] || '',
+            endereco: doc['endereco'] || '',
           }));
         }
 

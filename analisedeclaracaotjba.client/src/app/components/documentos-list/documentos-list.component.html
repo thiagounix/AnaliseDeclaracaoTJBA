@@ -21,8 +21,9 @@
         <th>Número da Certidão</th>
         <th>Status</th>
         <th>Tipo de Envio</th>
+        <th>QrCode</th>
         <th>Resultado</th>
-        <th>Resultado</th>
+        <th>Endereço</th>
       </tr>
     </thead>
     <tbody>
@@ -39,7 +40,13 @@
         <td>{{ documento.certidaoNumero }}</td>
         <td>{{ documento.statusProcessamentoCertidao }}</td>
         <td>{{ getTipoEnvio(documento.logs) }}</td>
-
+        <td>
+          <img *ngIf="documento.qrcode"
+               [src]="documento.qrcode"
+               alt="QR Code"
+               class="qrcode-img" />
+          <span *ngIf="!documento.qrcode">Sem QR Code</span>
+        </td>
 
         <td>
           <i *ngIf="documento.resultadoValidacao === 'Certidão válida'" class="fas fa-check-circle icon-valid" title="Certidão válida"></i>
@@ -47,6 +54,15 @@
           <i *ngIf="documento.resultadoValidacao === 'Situação não informada'" class="fas fa-info-circle icon-info" title="Situação não informada"></i>
           <!--<i *ngIf="isCertidaoVencida(documento.dataPrazoCertidao)" class="fas fa-exclamation-circle icon-alert" title="Certidão vencida"></i>-->
         </td>
+        <td>
+          <a *ngIf="documento.endereco"
+             [href]="getGoogleMapsUrl(documento.endereco)"
+             target="_blank">
+            <i class="fas fa-map-marker-alt" title="Ver no Google Maps"></i>
+          </a>
+          <span *ngIf="!documento.endereco">Sem endereço</span>
+        </td>
+
         <td>
           <button (click)="baixarDocumento(documento._id, documento.razaoSocial)"
                   [disabled]="isEnviadoPorLote(documento.logs)">

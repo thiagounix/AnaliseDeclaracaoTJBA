@@ -14,7 +14,7 @@ export interface Documento {
   processoList?: string[]; // Lista de processos, opcional
   emissor?: string; // Emissor da certidão
   logs: LogEntry[]; // Logs
-  qrcode: string; // QR Code
+  qrcode?: string; // QR Code
   resultadoValidacao?: string; // Adicionado
   possuiArquivoPdf?: boolean; // Indica se possui arquivo PDF
 }

@@ -10,6 +10,13 @@
   gap: 10px;
   align-items: center;
 }
+.qrcode-img {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  align-items: center;
+}
+
 
   .filtros input {
     flex: 1;
@@ -47,6 +54,17 @@
   font-size: 14px;
   background-color: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.fas.fa-map-marker-alt {
+  font-size: 1.5rem; /* Aumenta o tamanho do ícone */
+  color: #007bff; /* Ajusta a cor do ícone (opcional) */
+  margin: auto; /* Centraliza dentro da célula */
+}
+
+td a {
+  display: flex; /* Torna o ícone flexível */
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center; /* Centraliza verticalmente */
 }
 
   .documentos-table th,
