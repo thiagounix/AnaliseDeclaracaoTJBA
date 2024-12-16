@@ -33,7 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Services\" />
     <Folder Include="logs\" />
     <Folder Include="uploads\" />
   </ItemGroup>

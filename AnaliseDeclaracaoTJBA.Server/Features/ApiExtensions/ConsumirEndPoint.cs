@@ -87,6 +87,15 @@ public static class ConsumirEndPoint
                             var endereco = apiResponse.TryGetProperty("endereco", out var enderecoElement)
                                 ? enderecoElement.GetString()
                                 : null;
+                            var numSerie = apiResponse.TryGetProperty("numSerie", out var numSerieElement)
+                                ? numSerieElement.GetString()
+                                : null;
+                            var numDaje = apiResponse.TryGetProperty("numDaje", out var numDajeElement)
+                                ? numDajeElement.GetString()
+                                : null;
+                                 var tipoParticipacao = apiResponse.TryGetProperty("tipoParticipacao", out var tipoParticipacaoElement)
+                                ? tipoParticipacaoElement.GetString()
+                                : null;
                             var razaoSocial = apiResponse.TryGetProperty("razaoSocial", out var razaoSocialElement)
                                  ? razaoSocialElement.GetString()
                                  : null;
@@ -115,7 +124,7 @@ public static class ConsumirEndPoint
                                     { "cpfCnpj", fornecedor.cpfCnpj },
                                     { "certidaoNumero", fornecedor.certidaoNumero },
                                     { "razaoSocial", razaoSocial?.Trim() },
-                                    {"dataCertidao",dataCertidao  },
+                                    { "dataCertidao",dataCertidao  },
                                     { "dataPrazoCertidao", dataPrazoCertidao},
                                     { "statusProcessamentoCertidao", "Processado" },
                                     { "validado", validado },
@@ -123,6 +132,10 @@ public static class ConsumirEndPoint
                                     { "dataValidacao", DateTime.UtcNow },
                                     { "modeloCertidao" , 4 },
                                     { "endereco", endereco != null ? (BsonValue)endereco : BsonNull.Value },
+                                    { "situacao",situacao },
+                                    { "tipoParticipacao", tipoParticipacao },
+                                    { "numSerie",numSerie},
+                                    { "numDaje",numDaje},
                                     {"qrcode",qrCode },
                                     { "logs", new BsonArray
                                         {
@@ -145,11 +158,15 @@ public static class ConsumirEndPoint
                                     .Set("validado", validado)
                                     .Set("resultadoValidacao", resultadoValidacao)
                                     .Set("razaoSocial", razaoSocial?.Trim())
-                                    .Set("DataPrazoCertidao", dataPrazoCertidao)
+                                    .Set("dataPrazoCertidao", dataPrazoCertidao)
                                     .Set("dataValidacao", DateTime.UtcNow)
                                     .Set("dataCertidao", dataCertidao)
                                     .Set("modeloCertidao", 4)
+                                    .Set("situacao", situacao != null ? (BsonValue)situacao : BsonNull.Value)
+                                    .Set("tipoParticipacao", tipoParticipacao != null ? (BsonValue)tipoParticipacao : BsonNull.Value)
                                     .Set("endereco", endereco != null ? (BsonValue)endereco : BsonNull.Value)
+                                    .Set("numSerie", numSerie != null ? (BsonValue)numSerie : BsonNull.Value)
+                                    .Set("numDaje", numDaje != null ? (BsonValue)numDaje : BsonNull.Value)
                                     .Set("qrcode", qrCode != null ? (BsonValue)qrCode : BsonNull.Value)
                                     .Push("logs", new BsonDocument
                                     {

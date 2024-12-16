@@ -1,5 +1,7 @@
 using AnaliseDeclaracaoTJBA.Server;
 using AnaliseDeclaracaoTJBA.Server.Features.ApiExtensions;
+using AnaliseDeclaracaoTJBA.Server.Features.ApiExtensions.Requests;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using Serilog;
@@ -30,7 +32,28 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "API de Documentos", Version = "v1" });
     c.OperationFilter<FileUploadOperationFilter>();
-    // c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "YourProjectName.xml")); // Comente se não tiver XML
+
+    c.MapType<EnviarCertidaoRequest>(() => new OpenApiSchema
+    {
+        Type = "object",
+        Properties = new Dictionary<string, OpenApiSchema>
+        {
+            ["fornecedores"] = new OpenApiSchema
+            {
+                Type = "array",
+                Items = new OpenApiSchema
+                {
+                    Type = "object",
+                    Properties = new Dictionary<string, OpenApiSchema>
+                    {
+                        ["cpfCnpj"] = new OpenApiSchema { Type = "string", Example = new OpenApiString("12.345.678/0001-99") },
+                        ["certidaoNumero"] = new OpenApiSchema { Type = "string", Example = new OpenApiString("12345678") },
+                        ["fileCertidao"] = new OpenApiSchema { Type = "string", Example = new OpenApiString("base64_pdf_content_here") }
+                    }
+                }
+            }
+        }
+    });
 });
 
 
@@ -48,24 +71,11 @@ builder.Host.UseSerilog();
 var app = builder.Build();
 app.UseCors("AllowAngularClient");
 
-
-// Configurar Middleware de Logging para Depuração
 app.Use(async (context, next) =>
 {
     Console.WriteLine($"Recebendo requisição para {context.Request.Path}");
     await next.Invoke();
 });
-//app.MapPost("/api/start-processing", (CertidaoProcessorService processor) =>
-//{
-//    processor.StartProcessing();
-//    return Results.Ok("Processamento iniciado.");
-//});
-
-//app.MapPost("/api/stop-processing", async (CertidaoProcessorService processor) =>
-//{
-//    await processor.StopProcessingAsync();
-//    return Results.Ok("Processamento pausado.");
-//});
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -76,5 +86,5 @@ app.UseSwaggerUI();
 app.MapEndpointsDocumentos();
 app.MapEndpointsProcessarPDF();
 app.MapConsumirEndPoint();
-
+app.MapEndpointsExternos();
 app.Run();

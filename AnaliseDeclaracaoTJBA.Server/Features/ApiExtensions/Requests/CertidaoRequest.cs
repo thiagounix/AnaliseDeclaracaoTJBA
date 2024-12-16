@@ -7,8 +7,6 @@ public class CertidaoRequest
 
 public class Fornecedor
 {
-    
     public required string cpfCnpj { get; set; }
     public required string certidaoNumero { get; set; }
-   
 }

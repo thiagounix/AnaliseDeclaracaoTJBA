@@ -1,5 +1,4 @@
-﻿using iTextSharp.text.pdf.qrcode;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
 
@@ -25,10 +24,7 @@ public static class DocumentosEndpoints
                 {
                     filters.Add(Builders<BsonDocument>.Filter.Eq("certidaoNumero", certidaoNumero));
                 }
-                if (!string.IsNullOrEmpty(status))
-                {
-                    filters.Add(Builders<BsonDocument>.Filter.Eq("statusProcessamentoCertidao", status));
-                }
+
 
                 var filter = filters.Any()
                     ? Builders<BsonDocument>.Filter.And(filters)
@@ -74,8 +70,7 @@ public static class DocumentosEndpoints
                                                       ? d["statusProcessamentoCertidao"].AsString
                                                       : null,
                         validado = d.Contains("validado") && d["validado"].BsonType == BsonType.Boolean
-                                   ? d["validado"].AsBoolean
-                                   : false,
+&& d["validado"].AsBoolean,
                         dataValidacao = d.Contains("dataValidacao") && d["dataValidacao"].BsonType == BsonType.DateTime
                                         ? d["dataValidacao"].ToUniversalTime()
                                         : (DateTime?)null,
@@ -138,7 +133,6 @@ public static class DocumentosEndpoints
                     return Results.NotFound("Documento não encontrado.");
                 }
 
-                // Obtém o fileId do documento para buscar o arquivo no GridFS
                 if (!documento.Contains("fileId") || !ObjectId.TryParse(documento["fileId"].ToString(), out var fileObjectId))
                 {
                     return Results.NotFound("Arquivo associado ao documento não encontrado.");
@@ -155,7 +149,7 @@ public static class DocumentosEndpoints
                 await gridFS.DownloadToStreamAsync(fileObjectId, memoryStream);
 
                 memoryStream.Position = 0;
-                // Retorna o arquivo com o nome original
+               
                 return Results.File(memoryStream.ToArray(), "application/pdf", fileInfo.Filename);
 
             }
